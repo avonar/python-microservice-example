@@ -1,0 +1,7 @@
+starlette_prometheus
+opentelemetry-instrumentation-fastapi
+fastapi
+pydantic_vault
+typed-argument-parser
+pyaml_env
+uvicorn
