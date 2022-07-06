@@ -28,14 +28,17 @@ repos:
             "flake8-quotes==3.3.1",
             "flake8-string-format==0.2.3",
           ]
-  - repo: https://github.com/pycqa/pylint
-    rev: ""
+
+  - repo: local
     hooks:
       - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
         files: ^(app)/.+\.py$
-        # additional_dependencies: [requirements.txt]
         args:
           [
+            "--rcfile=setup.cfg",
             "--max-line-length=120",
             "--disable=duplicate-code",
             "--disable=import-outside-toplevel",
@@ -57,6 +60,7 @@ repos:
             "--disable=R0801",
             "--disable=raise-missing-from",
           ]
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v3.4.0"
     hooks:
