@@ -1,0 +1,86 @@
+# all args here are optional
+files: src/
+repos:
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: isort (python)
+  - repo: https://github.com/pycqa/flake8
+    rev: "" # pick a git hash / tag to point to
+    hooks:
+      - id: flake8
+        name: flake8
+        entry: flake8
+        language: python
+        files: ^(app)/.+\.py$
+        args:
+          [
+            "--ignore=D10,P101,S101,S311,S404,S410,W503,C812,W291,I100,A003,Q000,I201,I202,C401",
+            "--import-order-style=pycharm",
+            "--max-complexity=10",
+            "--inline-quotes=double",
+            "--max-line-length=120",
+            "--verbose",
+          ]
+        additional_dependencies:
+          [
+            "flake8-import-order==0.18.1",
+            "flake8-quotes==3.3.1",
+            "flake8-string-format==0.2.3",
+          ]
+  - repo: https://github.com/pycqa/pylint
+    rev: ""
+    hooks:
+      - id: pylint
+        files: ^(app)/.+\.py$
+        args:
+          [
+            "--max-line-length=120",
+            "--disable=duplicate-code",
+            "--disable=import-outside-toplevel",
+            "--disable=missing-docstring",
+            "--disable=bad-continuation",
+            "--disable=locally-disabled",
+            "--disable=too-few-public-methods",
+            "--disable=too-many-arguments",
+            "--disable=too-many-instance-attributes",
+            "--disable=arguments-renamed",
+            "--disable=missing-docstring",
+            "--disable=no-member",
+            "--disable=too-many-lines",
+            "--disable=R0915",
+            "--disable=R0912",
+            "--disable=W0221",
+            "--disable=R0914",
+            "--disable=R0902",
+            "--disable=E0611",
+            "--disable=R0801",
+            "--disable=raise-missing-from",
+          ]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "v3.4.0"
+    hooks:
+      - id: check-added-large-files
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: requirements-txt-fixer
+      - id: forbid-new-submodules
+      - id: trailing-whitespace
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.2.3
+    hooks:
+      - id: add-trailing-comma
+
+  - repo: https://github.com/pre-commit/mirrors-yapf
+    rev: v0.30.0
+    hooks:
+      - id: yapf
+        types: [python]
+        args:
+          [
+            "--style={based_on_style: pep8, indent_width: 4, column_limit: 100, split_before_logical_operator: False}",
+          ]

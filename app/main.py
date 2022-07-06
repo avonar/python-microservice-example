@@ -1,5 +1,7 @@
 from config import config
 from fastapi import FastAPI
+import uvicorn
+from custom_logger import setup_logging
 
 from schemas.version import VersionSchema
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
@@ -16,6 +18,8 @@ app = FastAPI(title="Name of service",
 FastAPIInstrumentor.instrument_app(app)
 app.add_middleware(PrometheusMiddleware)
 
+app.add_route("/metrics/", metrics)
+
 
 @app.get("/version", response_model=VersionSchema)
 async def version():
@@ -24,12 +28,12 @@ async def version():
 
 if __name__ == "__main__":
     uvicorn.run(
-        "start:app",
+        "main:app",
         host="0.0.0.0",  # noqa S104
         port=config.PORT,
         debug=config.DEBUG,
         reload=config.DEBUG,
-        log_config=logging_config,
+        log_config=setup_logging(config.ENV == 'prod'),
         use_colors=True,
         log_level=config.LOG_LEVEL.lower(),
     )

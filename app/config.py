@@ -1,6 +1,7 @@
 from pyaml_env import parse_config
 from pydantic import BaseSettings, SecretStr, Extra
 from tap import Tap
+import logging
 
 
 class CollectorConfig(BaseSettings):
@@ -34,3 +35,5 @@ args = ArgumentParser().parse_args()
 yaml_config = parse_config('.app-ci/local-config.yaml') if args.local_config else {}
 
 config = CollectorConfig().parse_obj(yaml_config)
+
+LOG_LEVEL = logging.getLevelName('DEBUG' if config.DEBUG else config.LOG_LEVEL.upper())
