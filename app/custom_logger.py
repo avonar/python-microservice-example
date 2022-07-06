@@ -1,7 +1,8 @@
 import logging
-from loguru import logger
 import sys
+
 from config import LOG_LEVEL
+from loguru import logger
 
 
 class InterceptHandler(logging.Handler):
@@ -18,8 +19,10 @@ class InterceptHandler(logging.Handler):
             frame = frame.f_back
             depth += 1
 
-        logger.opt(depth=depth, exception=record.exc_info,
-                   colors=True).log(level, record.getMessage())
+        logger.opt(
+            depth=depth, exception=record.exc_info,
+            colors=True,
+        ).log(level, record.getMessage())
 
 
 def setup_logging(is_json_logs: bool = False):

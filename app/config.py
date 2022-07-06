@@ -1,7 +1,8 @@
-from pyaml_env import parse_config
-from pydantic import BaseSettings, SecretStr, Extra
-from tap import Tap
 import logging
+
+from pyaml_env import parse_config
+from pydantic import BaseSettings, Extra, SecretStr
+from tap import Tap
 
 
 class CollectorConfig(BaseSettings):

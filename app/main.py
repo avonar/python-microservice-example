@@ -1,19 +1,20 @@
-from config import config
-from fastapi import FastAPI
 import uvicorn
+from config import config
 from custom_logger import setup_logging
-
-from schemas.version import VersionSchema
+from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from schemas.version import VersionSchema
 from starlette_prometheus import PrometheusMiddleware, metrics
 
-app = FastAPI(title="Name of service",
-              version="0.00.15",
-              description="OpenAPI schema",
-              debug=config.DEBUG,
-              dependencies=[],
-              docs_url=None if config.ENV == 'prod' else "/docs",
-              redoc_url=None if config.ENV == 'prod' else "/redoc")
+app = FastAPI(
+    title="Name of service",
+    version="0.00.15",
+    description="OpenAPI schema",
+    debug=config.DEBUG,
+    dependencies=[],
+    docs_url=None if config.ENV == 'prod' else "/docs",
+    redoc_url=None if config.ENV == 'prod' else "/redoc",
+)
 
 FastAPIInstrumentor.instrument_app(app)
 app.add_middleware(PrometheusMiddleware)
