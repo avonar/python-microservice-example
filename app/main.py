@@ -23,8 +23,8 @@ app.add_middleware(PrometheusMiddleware)
 
 app.add_route("/metrics/", metrics)
 
-logger = logging.getLogger(__name__)
 setup_logging(config.ENV == 'prod')
+logger = logging.getLogger(__name__)
 
 
 @app.get("/version", response_model=VersionSchema)
@@ -41,5 +41,6 @@ if __name__ == "__main__":
         debug=config.DEBUG,
         reload=config.DEBUG,
         use_colors=True,
+        log_config=None,
         access_log=True,
     )

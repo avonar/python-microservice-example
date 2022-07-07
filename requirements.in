@@ -6,3 +6,5 @@ typed-argument-parser
 pyaml_env
 uvicorn
 pydantic
+colorlog==6.6.0
+python-json-logger==2.0.2

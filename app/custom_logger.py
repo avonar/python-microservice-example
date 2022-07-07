@@ -1,40 +1,45 @@
 import logging
 import sys
 
+from colorlog import ColoredFormatter
 from config import LOG_LEVEL
-from loguru import logger
-
-
-class InterceptHandler(logging.Handler):
-    def emit(self, record):
-        # Get corresponding Loguru level if it exists
-        try:
-            level = logger.level(record.levelname).name
-        except ValueError:
-            level = record.levelno
-
-        # Find caller from where originated the logged message
-        frame, depth = logging.currentframe(), 2
-        while frame.f_code.co_filename == logging.__file__:
-            frame = frame.f_back
-            depth += 1
-
-        logger.opt(
-            depth=depth, exception=record.exc_info,
-            colors=True,
-        ).log(level, record.getMessage())
+from pythonjsonlogger import jsonlogger
 
 
 def setup_logging(is_json_logs: bool = False):
-    # intercept everything at the root logger
-    logging.root.handlers = [InterceptHandler()]
-    logging.root.setLevel(LOG_LEVEL)
 
-    # remove every other logger's handlers
-    # and propagate to root logger
-    for name in logging.root.manager.loggerDict.keys():
-        logging.getLogger(name).handlers = []
-        logging.getLogger(name).propagate = True
+    if is_json_logs:
+        format_str = '%(levelname)%(message)%(asctime)%(exc_info)'
+        log_handler = logging.StreamHandler(sys.stdout)
+        formatter = jsonlogger.JsonFormatter(format_str)
+        log_handler.setFormatter(formatter)
+        logging.basicConfig(
+            level=LOG_LEVEL,
+            format='%(asctime)s %(levelname)-8s %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S:%f',
+            handlers=[log_handler],
+        )
+        return
 
-    # configure loguru
-    logger.configure(handlers=[{"sink": sys.stdout, "serialize": is_json_logs}])
+    colored_formatter = ColoredFormatter(
+        "%(asctime)s %(log_color)s%(levelname)-8s%(reset)s %(white)s%(message)s",
+        datefmt='%Y-%m-%d %H:%M:%S',
+        reset=True,
+        log_colors={
+            'DEBUG': 'cyan',
+            'INFO': 'green',
+            'WARNING': 'yellow',
+            'ERROR': 'red',
+            'CRITICAL': 'red,bg_white',
+        },
+        secondary_log_colors={},
+        style='%',
+    )
+
+    colored_handler = logging.StreamHandler()
+    colored_handler.setFormatter(colored_formatter)
+
+    logging.basicConfig(
+        level=LOG_LEVEL,
+        handlers=[colored_handler],
+    )
