@@ -1,3 +1,5 @@
+import logging
+
 import uvicorn
 from config import config
 from custom_logger import setup_logging
@@ -21,9 +23,13 @@ app.add_middleware(PrometheusMiddleware)
 
 app.add_route("/metrics/", metrics)
 
+logger = logging.getLogger(__name__)
+setup_logging(config.ENV == 'prod')
+
 
 @app.get("/version", response_model=VersionSchema)
 async def version():
+    logger.info("version")
     return {"version": config.CI_COMMIT_SHA, "env": config.ENV}
 
 
@@ -34,7 +40,6 @@ if __name__ == "__main__":
         port=config.PORT,
         debug=config.DEBUG,
         reload=config.DEBUG,
-        log_config=setup_logging(config.ENV == 'prod'),
         use_colors=True,
-        log_level=config.LOG_LEVEL.lower(),
+        access_log=True,
     )

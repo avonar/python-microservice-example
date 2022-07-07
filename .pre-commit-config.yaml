@@ -38,7 +38,6 @@ repos:
         files: ^(app)/.+\.py$
         args:
           [
-            "--rcfile=setup.cfg",
             "--max-line-length=120",
             "--disable=duplicate-code",
             "--disable=import-outside-toplevel",
@@ -84,5 +83,5 @@ repos:
         types: [python]
         args:
           [
-            "--style={based_on_style: pep8, indent_width: 4, column_limit: 100, split_before_logical_operator: False}",
+            "--style={based_on_style: pep8, indent_width: 4, column_limit: 120, split_before_logical_operator: False}",
           ]
