@@ -21,6 +21,9 @@ class CollectorConfig(BaseSettings):
     DEBUG: bool = False
     PORT: int = 8000
     LOG_LEVEL: str = "info"
+    JWT_SECERT: SecretStr = SecretStr('')
+    GOOGLE_OAUTH_CLIENT_ID: SecretStr = SecretStr('')
+    GOOGLE_OAUTH_CLIENT_SECRET: SecretStr = SecretStr('')
 
     class Config:
         case_sensitive = True

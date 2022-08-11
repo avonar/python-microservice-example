@@ -1,5 +1,5 @@
 starlette_prometheus
-opentelemetry-instrumentation-fastapi
+opentelemetry-instrumentation-fastapi==0.31b0
 fastapi
 pydantic_vault
 typed-argument-parser
@@ -8,3 +8,5 @@ uvicorn
 pydantic
 colorlog==6.6.0
 python-json-logger==2.0.2
+psycopg2
+fastapi-users[sqlalchemy,oauth]
