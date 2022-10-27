@@ -7,13 +7,6 @@ from tap import Tap
 
 class CollectorConfig(BaseSettings):
     # All variables MUST have possibility to be overwritten by environment variables
-    # example of usage hashicorp vault:
-    # from pydantic_vault import vault_config_settings_source
-    # DATABASE_URL: str = SecretStr(
-    #     ...,
-    #     vault_secret_path="secret/data/path/to/secret",
-    #     vault_secret_key="DATABASE_URL",
-    # )
 
     DATABASE_URL: SecretStr = SecretStr('')
     CI_COMMIT_SHA: str = "local"
